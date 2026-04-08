@@ -1,15 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
-    }
-  ]
+  "name": "blackstone-tech",
+  "public": true,
+  "buildCommand": "echo 'Static site deployed'",
+  "outputDirectory": "frontend"
 }
