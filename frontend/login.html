@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Blackstone Tech</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f3460 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .login-description {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-color), #f0d581);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .demo-credentials {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .demo-credentials h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-credentials p {
+            margin: 0.25rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-buttons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-buttons a:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="images/logo.png" alt="Blackstone Tech Logo">
+            </div>
+            
+            <h1 class="login-title">Blackstone Tech</h1>
+            <p class="login-description">Sign in to your account</p>
+
+            <div class="demo-credentials">
+                <h4>Demo Admin Credentials:</h4>
+                <p><strong>Email:</strong> blackstone.tech02@gmail.com</p>
+                <p><strong>Password:</strong> Bl@ckstoneTech2026</p>
+            </div>
+
+            <form id="loginForm">
+                <div id="errorMessage" class="error-message"></div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="login-button">Sign In</button>
+            </form>
+
+            <div class="login-footer">
+                <p>Don't have an account? <a href="#">Contact us</a></p>
+            </div>
+
+            <div class="social-login">
+                <p style="margin-bottom: 1rem; color: var(--text-light);">Or connect with</p>
+                <div class="social-buttons">
+                    <a href="https://wa.me/255677707769" title="WhatsApp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/blackstone_tech_tz" title="Instagram" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="mailto:blackstone.tech02@gmail.com" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo credentials
+        const ADMIN_CREDENTIALS = {
+            email: 'blackstone.tech02@gmail.com',
+            password: 'Bl@ckstoneTech2026'
+        };
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+
+            // Validate credentials
+            if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+                // Save login info
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userRole', 'admin');
+                
+                if (remember) {
+                    localStorage.setItem('rememberMe', 'true');
+                }
+
+                // Redirect to dashboard
+                window.location.href = 'admin.html';
+            } else {
+                // Show error
+                errorMessage.textContent = 'Invalid email or password. Please try again or contact support.';
+                errorMessage.style.display = 'block';
+
+                // Clear password field
+                document.getElementById('password').value = '';
+            }
+        });
+
+        // Check if already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>

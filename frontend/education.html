@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Hub - Blackstone Tech</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .education-page {
+            padding: 120px 20px 60px;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+
+        .education-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .education-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .video-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: rgba(102, 126, 234, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .play-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 175, 55, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover .play-button {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-category {
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            min-height: 2em;
+        }
+
+        .video-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            min-height: 2.7em;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 1rem;
+        }
+
+        .video-watch-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--accent-color), #f0d581);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .video-watch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            z-index: 2001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-box">
+                    <img src="images/logo.png" alt="Blackstone Tech Logo" class="logo">
+                    <span class="logo-text">BLACKSTONE TECH</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#services" class="nav-link">Services</a></li>
+                <li><a href="store.html" class="nav-link">Store</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="education-page">
+        <div class="container">
+            <div class="education-header">
+                <h1>Tech Education Hub</h1>
+                <p>Learn Technology from Industry Experts</p>
+            </div>
+
+            <div class="categories">
+                <button class="category-btn active" onclick="filterVideos('all')">All Videos</button>
+                <button class="category-btn" onclick="filterVideos('cctv')">CCTV & Security</button>
+                <button class="category-btn" onclick="filterVideos('networking')">Networking</button>
+                <button class="category-btn" onclick="filterVideos('development')">Development</button>
+                <button class="category-btn" onclick="filterVideos('business')">Business Solutions</button>
+            </div>
+
+            <div class="videos-grid" id="videosGrid">
+                <!-- Videos will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal" onclick="closeVideo(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeVideo()">&times;</span>
+            <div id="videoWrapper"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Blackstone Tech</h4>
+                    <p>Your trusted partner in digital transformation</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="store.html">Store</a></li>
+                        <li><a href="education.html">Learning</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Blackstone Tech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const allVideos = {
+            cctv: [
+                { id: 1, title: 'CCTV Camera Installation Guide', category: 'CCTV & Security', icon: '📹', youtube: 'dQw4w9WgXcQ', duration: '18:45', views: '12.5K' },
+                { id: 2, title: 'Understanding IP Cameras', category: 'CCTV & Security', icon: '📹', youtube: 'jNQXAC9IVRw', duration: '22:30', views: '8.3K' },
+                { id: 3, title: 'CCTV System Maintenance', category: 'CCTV &Security', icon: '📹', youtube: 'YQHsXMglC9A', duration: '15:20', views: '5.8K' },
+                { id: 4, title: 'Night Vision Technology', category: 'CCTV & Security', icon: '📹', youtube: 'ELlfJcEp8cI', duration: '20:10', views: '9.2K' }
+            ],
+            networking: [
+                { id: 5, title: 'Network Setup Basics', category: 'Networking', icon: '🔌', youtube: 'iPAYw88kEcA', duration: '25:40', views: '15.6K' },
+                { id: 6, title: 'WiFi 6 Technology Explained', category: 'Networking', icon: '📶', youtube: '4gqSXQNpJ0k', duration: '19:15', views: '11.2K' },
+                { id: 7, title: 'Firewall Configuration', category: 'Networking', icon: '🔐', youtube: 'aqz5NdDAiJ4', duration: '23:50', views: '7.9K' },
+                { id: 8, title: 'Network Security Best Practices', category: 'Networking', icon: '🔐', youtube: 'y4n0FQKqRmQ', duration: '28:30', views: '14.3K' }
+            ],
+            development: [
+                { id: 9, title: 'Introduction to Web Development', category: 'Development', icon: '💻', youtube: 'EsdxK5Hwklc', duration: '30:20', views: '25.4K' },
+                { id: 10, title: 'JavaScript Fundamentals', category: 'Development', icon: '💻', youtube: 'ysEN5RaKOlE', duration: '35:45', views: '28.1K' },
+                { id: 11, title: 'Database Design & SQL', category: 'Development', icon: '🗄️', youtube: 'dxVcMB_4FlI', duration: '40:15', views: '19.7K' },
+                { id: 12, title: 'API Development Guide', category: 'Development', icon: '🔗', youtube: 'L72fhGm1tfE', duration: '26:30', views: '12.8K' }
+            ],
+            business: [
+                { id: 13, title: 'Digital Marketing Strategies', category: 'Business Solutions', icon: '📊', youtube: '9sE3xY4j1zk', duration: '24:10', views: '16.4K' },
+                { id: 14, title: 'Business Automation', category: 'Business Solutions', icon: '⚙️', youtube: 'K4TOrQik-3A', duration: '21:50', views: '10.5K' },
+                { id: 15, title: 'Graphic Design Basics', category: 'Business Solutions', icon: '🎨', youtube: 'eNxfC7wqsqI', duration: '32:20', views: '13.6K' },
+                { id: 16, title: 'Social Media Management', category: 'Business Solutions', icon: '📱', youtube: 'tYzMGQUlzTQ', duration: '19:40', views: '9.1K' }
+            ]
+        };
+
+        let currentFilter = 'all';
+
+        function displayVideos(filter) {
+            const container = document.getElementById('videosGrid');
+            let videos = [];
+
+            if (filter === 'all') {
+                videos = Object.values(allVideos).flat();
+            } else {
+                videos = allVideos[filter] || [];
+            }
+
+            container.innerHTML = videos.map(video => `
+                <div class="video-card fade-in-up">
+                    <div class="video-thumbnail">
+                        ${video.icon}
+                        <div class="play-button" onclick="playVideo('${video.youtube}')">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-category">${video.category}</div>
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-description">
+                            Learn about ${video.title.toLowerCase()} from industry experts at Blackstone Tech.
+                        </div>
+                        <div class="video-meta">
+                            <span>
+                                <i class="fas fa-eye"></i> ${video.views} | ${video.duration}
+                            </span>
+                            <button class="video-watch-btn" onclick="playVideo('${video.youtube}')">Watch</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterVideos(category) {
+            currentFilter = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            displayVideos(category);
+        }
+
+        function playVideo(youtubeId) {
+            const modal = document.getElementById('videoModal');
+            const wrapper = document.getElementById('videoWrapper');
+            
+            wrapper.innerHTML = `
+                <div class="iframe-container">
+                    <iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1" allowfullscreen></iframe>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeVideo(event) {
+            if (event && event.target.id !== 'videoModal') return;
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoWrapper').innerHTML = '';
+        }
+
+        // Initialize
+        displayVideos('all');
+    </script>
+</body>
+</html>

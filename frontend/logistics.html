@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics - Blackstone Tech</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .logistics-page {
+            padding: 120px 20px 60px;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+
+        .logistics-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logistics-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logistics-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .logistics-tabs button {
+            padding: 12px 25px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logistics-tabs button:hover,
+        .logistics-tabs button.active {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .logistics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logistics-company {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .logistics-company:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .company-logo {
+            width: 100%;
+            height: 120px;
+            background: rgba(102, 126, 234, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .company-rating {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .company-rating i {
+            color: var(--accent-color);
+            margin-right: 0.25rem;
+        }
+
+        .company-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .company-features {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-features h4 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .company-features ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .company-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .company-features i {
+            color: var(--accent-color);
+            width: 16px;
+        }
+
+        .company-contact {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-link {
+            flex: 1;
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            color: var(--accent-color);
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-color), #f0d581);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .delivery-timeline {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            z-index: 1;
+        }
+
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-dot {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+
+        .timeline-step h4 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-step p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-box">
+                    <img src="images/logo.png" alt="Blackstone Tech Logo" class="logo">
+                    <span class="logo-text">BLACKSTONE TECH</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="store.html" class="nav-link">Store</a></li>
+                <li><a href="#logistics" class="nav-link">Logistics</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+                <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="logistics-page">
+        <div class="container">
+            <div class="logistics-header">
+                <h1>Logistics & Shipping</h1>
+                <p>Reliable Delivery Networks Across Tanzania & Beyond</p>
+            </div>
+
+            <div class="logistics-tabs">
+                <button class="active" onclick="switchTab('local')">Local (Tanzania)</button>
+                <button onclick="switchTab('international')">International (China-Tanzania)</button>
+            </div>
+
+            <div id="localTab" class="logistics-grid">
+                <!-- Local logistics companies will be loaded here -->
+            </div>
+
+            <div id="internationalTab" class="logistics-grid hidden">
+                <!-- International logistics companies will be loaded here -->
+            </div>
+
+            <!-- Delivery Timeline -->
+            <div class="delivery-timeline">
+                <h2 style="margin-bottom: 2rem;">Delivery Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-dot"></div>
+                        <h4>Order Placed</h4>
+                        <p>Day 1</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot"></div>
+                        <h4>Processing</h4>
+                        <p>Day 1-2</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot"></div>
+                        <h4>Shipping</h4>
+                        <p>Day 3-5 (Local) / 7-14 (International)</p>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-dot"></div>
+                        <h4>Delivered</h4>
+                        <p>Tracking Provided</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Blackstone Tech</h4>
+                    <p>Your trusted partner in digital transformation</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="tel:+255677707769">+255 677 707 769</a></li>
+                        <li><a href="mailto:blackstone.tech02@gmail.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Blackstone Tech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const localCompanies = [
+            {
+                name: 'Blackstone Tech Logistics',
+                rating: 5,
+                logo: '🚚',
+                description: 'Official logistics partner of Blackstone Tech. Fast and reliable delivery across Tanzania.',
+                features: ['Same-day delivery in Dar es Salaam', 'Free shipping on orders > 500,000 TZS', '24/7 tracking', 'Insured shipments'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 677 707 769' },
+                    { icon: 'fa-envelope', label: 'Email', value: 'logistics@blackstonetech.tz' }
+                ]
+            },
+            {
+                name: 'Tanzania Express Cargo',
+                rating: 4.8,
+                logo: '📦',
+                description: 'Leading cargo service with nationwide coverage and competitive rates.',
+                features: ['Countrywide delivery', 'Express service available', 'Real-time tracking', 'Insurance options'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 654 123 456' },
+                    { icon: 'fa-globe', label: 'Website', value: 'tanzaniaexpress.tz' }
+                ]
+            },
+            {
+                name: 'SafeShip Tanzania',
+                rating: 4.7,
+                logo: '🛡️',
+                description: 'Specialized in secure delivery of high-value items and technology products.',
+                features: ['Secure packaging', 'Signature on delivery', 'Temperature control', 'GPS tracking'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 687 654 321' },
+                    { icon: 'fa-envelope', label: 'Email', value: 'info@safeship.tz' }
+                ]
+            },
+            {
+                name: 'ZipGo Delivery',
+                rating: 4.6,
+                logo: '⚡',
+                description: 'Fast and affordable last-mile delivery solution for urban areas.',
+                features: ['2-hour delivery slots', 'Mobile app tracking', 'Flexible scheduling', 'Low cost'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 700 456 789' },
+                    { icon: 'fa-globe', label: 'App', value: 'zipgodelivery.app' }
+                ]
+            },
+            {
+                name: 'FedEx Tanzania',
+                rating: 4.9,
+                logo: '📮',
+                description: 'International standard courier service with local branches.',
+                features: ['International standards', 'Customs handling', 'Door-to-door service', 'Insurance'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 654 987 321' },
+                    { icon: 'fa-globe', label: 'Website', value: 'fedex.com/tz' }
+                ]
+            }
+        ];
+
+        const internationalCompanies = [
+            {
+                name: 'Blackstone Tech International',
+                rating: 5,
+                logo: '✈️',
+                description: 'Direct partnership with suppliers in China. Bulk ordering and dropshipping available.',
+                features: ['China-Tanzania direct shipping', '7-14 days delivery', 'Customs clearance', 'Port pickup available', 'Volume discounts'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 677 707 769' },
+                    { icon: 'fa-envelope', label: 'Email', value: 'international@blackstonetech.tz' }
+                ]
+            },
+            {
+                name: 'DHL Global Express',
+                rating: 4.9,
+                logo: '🌍',
+                description: 'Worldwide express delivery with reliable China-Africa corridor.',
+                features: ['Door-to-door service', 'Customs clearance', 'Insurance included', 'Online tracking', 'Weekly schedules'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 654 123 456' },
+                    { icon: 'fa-globe', label: 'Website', value: 'dhl.com' }
+                ]
+            },
+            {
+                name: 'UPS International',
+                rating: 4.8,
+                logo: '📫',
+                description: 'Global shipping leader with strong China-Tanzania routes.',
+                features: ['12-18 days delivery', 'Real-time tracking', 'Brokerage service', 'Flexible payment'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+255 687 654 321' },
+                    { icon: 'fa-globe', label: 'Website', value: 'ups.com' }
+                ]
+            },
+            {
+                name: 'Alibaba Logistics',
+                rating: 4.7,
+                logo: '🏭',
+                description: 'Direct from China suppliers with integrated logistics solutions.',
+                features: ['Factory-direct shipping', 'Volume prices', '15-20 days delivery', 'Wholesale ready', 'English support'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+86 571 2588 0000' },
+                    { icon: 'fa-globe', label: 'Website', value: 'alibaba.com' }
+                ]
+            },
+            {
+                name: 'Amazon Global',
+                rating: 4.8,
+                logo: '📦',
+                description: 'Reliable fulfillment from China with multi-country coverage.',
+                features: ['FBA available', '10-15 days delivery', 'Bulk ordering', 'Quality assurance', 'Free returns'],
+                contact: [
+                    { icon: 'fa-phone', label: 'Call', value: '+86 10 8475 0000' },
+                    { icon: 'fa-globe', label: 'Website', value: 'amazon.com' }
+                ]
+            }
+        ];
+
+        function generateCompanyCard(company) {
+            const stars = '⭐'.repeat(Math.floor(company.rating));
+            const contacts = company.contact.map(c => `<a href="#" class="contact-link"><i class="fas ${c.icon}"></i> ${c.label}</a>`).join('');
+            const features = company.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('');
+
+            return `
+                <div class="logistics-company fade-in-up">
+                    <div class="company-logo">${company.logo}</div>
+                    <div class="company-name">${company.name}</div>
+                    <div class="company-rating">${stars} (${company.rating})</div>
+                    <div class="company-description">${company.description}</div>
+                    <div class="company-features">
+                        <h4>Key Services</h4>
+                        <ul>${features}</ul>
+                    </div>
+                    <div class="company-contact">${contacts}</div>
+                    <button class="book-btn" onclick="bookShipping('${company.name}')">Book Shipping</button>
+                </div>
+            `;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('[id$="Tab"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tab + 'Tab').classList.remove('hidden');
+            
+            document.querySelectorAll('.logistics-tabs button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function bookShipping(companyName) {
+            alert(`Booking with ${companyName}. You will be redirected to complete your shipping request.`);
+        }
+
+        // Initialize
+        document.getElementById('localTab').innerHTML = localCompanies.map(generateCompanyCard).join('');
+        document.getElementById('internationalTab').innerHTML = internationalCompanies.map(generateCompanyCard).join('');
+    </script>
+</body>
+</html>
