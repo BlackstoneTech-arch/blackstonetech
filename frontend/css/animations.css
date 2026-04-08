@@ -481,12 +481,48 @@
 
 /* ==================== ======================== ==================== */
 
-/* Smooth transitions */
-* {
-    transition: all 0.3s ease;
+/* Notification animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-/* Disable transitions for specific cases */
-.no-transition {
-    transition: none !important;
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Filter button active state */
+.filter-btn.active {
+    background: linear-gradient(135deg, #00d9ff, #0099ff);
+    color: #0a0a0f;
+    border-color: #00d9ff;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+}
+
+/* Cart count badge */
+#cart-count {
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 18px;
+    text-align: center;
 }

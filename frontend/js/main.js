@@ -1,28 +1,28 @@
-// ========== MAIN JAVASCRIPT ========== 
+// ========== MAIN JAVASCRIPT ==========
 
 // Global configuration
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = '/api'; // Changed from localhost for Vercel compatibility
 const CURRENCY = {
     TZS: { symbol: 'TZS', rate: 1 },
     USD: { symbol: '$', rate: 2500 }
 };
 
-// Mock product data
+// Mock product data (since backend won't work on Vercel)
 const products = {
     cctv: [
-        { id: 1, name: 'Hikvision DS-2CD2143G0-I', price: 850000, currency: 'TZS', category: 'CCTV', model: 'HK-2143G0-I', image: '📹' },
-        { id: 2, name: 'Dahua IPC-HDBW2431E', price: 750000, currency: 'TZS', category: 'CCTV', model: 'DH-2431E', image: '📹' },
-        { id: 3, name: 'Uniview IPC342E', price: 650000, currency: 'TZS', category: 'CCTV', model: 'UV-342E', image: '📹' },
-        { id: 4, name: 'Axis M3004-V', price: 1200000, currency: 'TZS', category: 'CCTV', model: 'AX-3004-V', image: '📹' },
+        { id: 1, name: 'Hikvision DS-2CD2143G0-I', price: 850000, currency: 'TZS', category: 'CCTV', model: 'HK-2143G0-I', image: '📹', description: '4MP HD Camera with IR Night Vision' },
+        { id: 2, name: 'Dahua IPC-HDBW2431E', price: 750000, currency: 'TZS', category: 'CCTV', model: 'DH-2431E', image: '📹', description: '3MP HD Camera with Smart Detection' },
+        { id: 3, name: 'Uniview IPC342E', price: 650000, currency: 'TZS', category: 'CCTV', model: 'UV-342E', image: '📹', description: '2MP HD Camera with Audio Support' },
+        { id: 4, name: 'Axis M3004-V', price: 1200000, currency: 'TZS', category: 'CCTV', model: 'AX-3004-V', image: '📹', description: 'Professional 2MP Camera with Analytics' },
     ],
     networking: [
-        { id: 5, name: 'Cisco Switch C9300', price: 5000000, currency: 'TZS', category: 'Networking', model: 'CS-C9300', image: '🔌' },
-        { id: 6, name: 'TP-Link WiFi 6 Router', price: 450000, currency: 'TZS', category: 'Networking', model: 'TP-AXE300', image: '📶' },
-        { id: 7, name: 'Ubiquiti UniFi Access Point', price: 350000, currency: 'TZS', category: 'Networking', model: 'UB-UAP-AC-PRO', image: '📡' },
+        { id: 5, name: 'Cisco Switch C9300', price: 5000000, currency: 'TZS', category: 'Networking', model: 'CS-C9300', image: '🔌', description: '48-Port Enterprise Switch' },
+        { id: 6, name: 'TP-Link WiFi 6 Router', price: 450000, currency: 'TZS', category: 'Networking', model: 'TP-AXE300', image: '📶', description: 'AX3000 Dual Band WiFi 6 Router' },
+        { id: 7, name: 'Ubiquiti UniFi Access Point', price: 350000, currency: 'TZS', category: 'Networking', model: 'UB-UAP-AC-PRO', image: '📡', description: 'Professional WiFi Access Point' },
     ],
     development: [
-        { id: 8, name: 'Server License - Annual', price: 2500000, currency: 'TZS', category: 'Software', model: 'SERVER-LIC-2024', image: '💻' },
-        { id: 9, name: 'Custom Web App Development', price: 15000000, currency: 'TZS', category: 'Software', model: 'CUSTOM-WEB-001', image: '🌐' },
+        { id: 8, name: 'Server License - Annual', price: 2500000, currency: 'TZS', category: 'Software', model: 'SERVER-LIC-2024', image: '💻', description: 'Annual Server Software License' },
+        { id: 9, name: 'Custom Web App Development', price: 15000000, currency: 'TZS', category: 'Software', model: 'CUSTOM-WEB-001', image: '🌐', description: 'Full-Stack Web Application Development' },
     ]
 };
 
@@ -97,27 +97,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== LOAD PRODUCTS ========== 
 
-function loadProducts() {
+function loadProducts(filter = 'all') {
     const productsGrid = document.getElementById('productsGrid');
     if (!productsGrid) return;
 
-    const allProducts = Object.values(products).flat().slice(0, 6);
-    
+    let allProducts = Object.values(products).flat();
+
+    // Filter products if needed
+    if (filter !== 'all') {
+        allProducts = allProducts.filter(product => product.category.toLowerCase() === filter.toLowerCase());
+    }
+
+    // Limit to 6 for homepage, show all for store page
+    const isStorePage = window.location.pathname.includes('store.html');
+    if (!isStorePage) {
+        allProducts = allProducts.slice(0, 6);
+    }
+
     productsGrid.innerHTML = allProducts.map(product => `
         <div class="product-card">
             <div class="product-image">${product.image}</div>
             <div class="product-info">
                 <div class="product-name">${product.name}</div>
                 <div class="product-model" style="font-size: 0.85rem; color: #b0b0b0; margin-bottom: 0.5rem;">Model: ${product.model}</div>
+                ${product.description ? `<div class="product-description" style="font-size: 0.9rem; color: #888; margin-bottom: 0.5rem;">${product.description}</div>` : ''}
                 <div class="product-price">${formatCurrency(product.price)}</div>
-                <button class="btn btn-primary" onclick="goToStore()">View More →</button>
+                <button class="btn btn-primary" onclick="addToCart(${product.id})">Add to Cart →</button>
             </div>
         </div>
     `).join('');
 }
 
+function filterProducts(category) {
+    // Update active filter button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase().includes(category.toLowerCase()) || (category === 'all' && btn.textContent === 'All')) {
+            btn.classList.add('active');
+        }
+    });
+
+    loadProducts(category === 'all' ? 'all' : category);
+}
+
+function addToCart(productId) {
+    // Find product by ID
+    const allProducts = Object.values(products).flat();
+    const product = allProducts.find(p => p.id === productId);
+
+    if (product) {
+        let cart = getFromLocalStorage('cart') || [];
+        const existingItem = cart.find(item => item.id === productId);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+
+        saveToLocalStorage('cart', cart);
+        showNotification(`${product.name} added to cart!`, 'success');
+        updateCartCount();
+    }
+}
+
+function updateCartCount() {
+    const cart = getFromLocalStorage('cart') || [];
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    // Update cart count in navbar if it exists
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        cartCount.textContent = totalItems;
+        cartCount.style.display = totalItems > 0 ? 'inline' : 'none';
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: ${type === 'success' ? '#00d9ff' : '#ff6b6b'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease-out;
+    `;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
 function goToStore() {
-    // Redirect to store page or section
     window.location.href = 'store.html';
 }
 
@@ -199,15 +282,48 @@ function loadServiceDetails(service) {
 document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
     loadNews();
-    
+    updateCartCount();
+    checkLoginStatus();
+
     // Add smooth scroll behavior for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (href === '#' || href === '#home') return;
-            
+
             e.preventDefault();
             smoothScroll(href);
+        });
+    });
+
+    // Add login form handler
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // Add logout handler
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+
+    // Add dropdown toggle functionality
+    document.querySelectorAll('.dropdown > a').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdownContent = this.nextElementSibling;
+            if (dropdownContent) {
+                const isVisible = dropdownContent.style.display === 'block';
+                // Hide all dropdowns first
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                // Show this one if it wasn't visible
+                if (!isVisible) {
+                    dropdownContent.style.display = 'block';
+                }
+            }
         });
     });
 });
@@ -238,16 +354,76 @@ function removeFromLocalStorage(key) {
     localStorage.removeItem(key);
 }
 
-// ========== FORM VALIDATION ========== 
+// ========== LOGIN FUNCTIONALITY ========== 
 
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+function handleLogin(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Demo credentials
+    const demoUsers = [
+        { email: 'admin@blackstonetech.co', password: 'admin123', role: 'admin' },
+        { email: 'user@blackstonetech.co', password: 'user123', role: 'user' }
+    ];
+
+    const user = demoUsers.find(u => u.email === email && u.password === password);
+
+    if (user) {
+        // Save user session
+        saveToLocalStorage('user', {
+            email: user.email,
+            role: user.role,
+            loggedIn: true,
+            loginTime: new Date().toISOString()
+        });
+
+        showNotification(`Welcome back, ${user.role === 'admin' ? 'Admin' : 'User'}!`, 'success');
+
+        // Redirect based on role
+        setTimeout(() => {
+            if (user.role === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+    } else {
+        showNotification('Invalid email or password', 'error');
+    }
 }
 
-function validatePhone(phone) {
-    const re = /^(\+\d{1,3}|0)\d{9,}$/;
-    return re.test(phone);
+function handleLogout() {
+    removeFromLocalStorage('user');
+    removeFromLocalStorage('cart');
+    showNotification('Logged out successfully', 'success');
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000);
+}
+
+function checkLoginStatus() {
+    const user = getFromLocalStorage('user');
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if (user && user.loggedIn) {
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+
+        // Add user info to navbar if element exists
+        const userInfo = document.getElementById('user-info');
+        if (userInfo) {
+            userInfo.textContent = `Hello, ${user.role === 'admin' ? 'Admin' : 'User'}`;
+            userInfo.style.display = 'inline-block';
+        }
+    } else {
+        if (loginBtn) loginBtn.style.display = 'inline-block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'none';
+    }
+}
 }
 
 // ========== EXPORT FUNCTIONS FOR OTHER PAGES ========== 
